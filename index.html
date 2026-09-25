@@ -53,8 +53,10 @@
   .gantt-title{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; flex-wrap:wrap; gap:8px; }
   .gantt-title h3{ margin:0; font-size:17px; }
   .gantt-title span{ font-size:12.5px; color:var(--muted); }
-  .legend{ display:flex; gap:16px; font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .legend{ display:flex; align-items:center; gap:16px; font-size:12px; color:var(--muted); margin-bottom:6px; }
   .legend i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+  .sync-dot{ width:8px; height:8px; margin-left:auto; border-radius:50%; background:var(--muted); flex:0 0 auto; }
+  .sync-dot.on{ background:var(--maroon-bright); }
   .lg-active{ background:var(--maroon-bright); }
   .lg-past{ background:var(--maroon-dim); border:1px solid var(--line); }
   .lg-future{ background:var(--panel-2); border:1px solid var(--line); }
@@ -132,7 +134,7 @@
       <span><i class="lg-active"></i>Active now</span>
       <span><i class="lg-past"></i>Done</span>
       <span><i class="lg-future"></i>Upcoming</span>
-      <span id="syncStatus" style="margin-left:auto;">○ Saved on this device only</span>
+      <span id="syncStatus" class="sync-dot" aria-label="Saved on this device only"></span>
     </div>
     <div class="g-scroll">
       <div class="gantt">
@@ -213,8 +215,8 @@ function initDb(){
 function setSyncStatus(shared){
   const el = document.getElementById('syncStatus');
   if(!el) return;
-  el.textContent = shared ? '● Shared with your team' : '○ Saved on this device only';
-  el.style.color = shared ? 'var(--maroon-bright)' : 'var(--muted)';
+  el.classList.toggle('on', shared);
+  el.setAttribute('aria-label', shared ? 'Shared with your team' : 'Saved on this device only');
 }
 
 function persist(){
